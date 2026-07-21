@@ -26,3 +26,4 @@ httpx
 faster-whisper
 chromadb
 sentence-transformers
+tgcrypto
