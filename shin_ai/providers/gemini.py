@@ -68,7 +68,7 @@ async def gemini_api(system_prompt, prompt, media_list=None) -> tuple[str, list[
     for model in models_to_try:
         failed_keys_count = 0
         if _is_model_on_cooldown(model):
-            logger.warning(f"Model {model} is on cooldown. Skipping.")
+            logger.debug(f"Model {model} is on cooldown. Skipping.")
             continue
         # Create a list of items to iterate over, preserving the current order
         for key_name, api_key in list(API_KEYS_MAP.items()):
@@ -83,7 +83,7 @@ async def gemini_api(system_prompt, prompt, media_list=None) -> tuple[str, list[
 
                 response_text = _extract_gemini_text(response)
                 if not response_text:
-                    logger.warning(
+                    logger.debug(
                         f"Gemini response had no text content (model: {model}, Key: {key_name})"
                     )
                     continue
@@ -107,22 +107,22 @@ async def gemini_api(system_prompt, prompt, media_list=None) -> tuple[str, list[
                 return response_text, pending_actions
             except asyncio.CancelledError:
                 if _rotate_key_to_back(key_name):
-                    logger.warning(f"Gemini timed out/cancelled (model: {model}, Key: {key_name}). Rotating key.")
+                    logger.debug(f"Gemini timed out/cancelled (model: {model}, Key: {key_name}). Rotating key.")
                 raise
             except Exception as e:
                 last_exception = e
                 failed_keys_count += 1
                 _rotate_key_to_back(key_name)
 
-                logger.warning(
+                logger.debug(
                     f"Gemini API key failed (model: {model}, Key: {key_name}, Failed Count: {failed_keys_count})"
                 )
 
                 if "you exceeded your current quota" in str(e).lower() or "429" in str(e):
-                    logger.warning(f"Gemini API key quota exceeded for model {model} (Key: {key_name}, Failed Count: {failed_keys_count})")
+                    logger.debug(f"Gemini API key quota exceeded for model {model} (Key: {key_name}, Failed Count: {failed_keys_count})")
                     update_key_status(key_name, "exhausted", model, e)
                 elif "503" in str(e):
-                    logger.warning(f"Gemini API model {model} is temporarily unavailable (503). Switching model.")
+                    logger.debug(f"Gemini API model {model} is temporarily unavailable (503). Switching model.")
                     update_key_status(key_name, "unavailable", model, e)
                     break
                 else:
@@ -130,7 +130,7 @@ async def gemini_api(system_prompt, prompt, media_list=None) -> tuple[str, list[
                     update_key_status(key_name, "error", model, e)
                 continue
 
-        logger.warning(
+        logger.debug(
             f"Model {model} failed for all keys. Failed keys: {failed_keys_count}. "
             "Trying next available model."
         )
@@ -291,7 +291,7 @@ async def _dispatch_gemini_tool(fn_call) -> tuple[str, dict | None]:
         logger.info("Gemini → action tool %r: %s", fn_call.name, args)
         return await handler(args)
 
-    logger.warning("Gemini → unknown tool requested: %r", fn_call.name)
+    logger.debug("Gemini → unknown tool requested: %r", fn_call.name)
     return f"Unknown tool: {fn_call.name}", None
 
 

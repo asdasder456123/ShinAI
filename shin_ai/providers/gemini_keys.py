@@ -107,7 +107,7 @@ async def check_single_key_status(key_name, api_key, model):
         status = "error"
         if "quota" in error_msg.lower() or "429" in error_msg:
             status = "exhausted"
-        logger.warning(f"Key status check [{model}]: {key_name} is {status.upper()} - {error_msg}")
+        logger.debug(f"Key status check [{model}]: {key_name} is {status.upper()} - {error_msg}")
         return {"key": key_name, "model": model, "status": status, "error": error_msg}
 
 
