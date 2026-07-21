@@ -15,7 +15,14 @@ DATA_DIR = PROJECT_ROOT / "data"
 SHIN_AI_DATA_DIR = Path(__file__).parent / "data"
 
 # Platform Credentials
-TELEGRAM_API_ID = int(__import__("os").getenv("API_ID", _cfg.platform.telegram_api_id or 0))
+import os
+
+_raw_api_id = os.getenv("API_ID") or _cfg.platform.telegram_api_id or "0"
+
+try:
+    TELEGRAM_API_ID = int(_raw_api_id)
+except ValueError:
+    TELEGRAM_API_ID = 0
 TELEGRAM_API_HASH = __import__("os").getenv("API_HASH", _cfg.platform.telegram_api_hash or "")
 TELEGRAM_BOT_TOKEN = _cfg.platform.telegram_bot_token
 DISCORD_BOT_TOKEN = _cfg.platform.discord_bot_token
