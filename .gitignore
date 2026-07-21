@@ -51,4 +51,4 @@ build/
 tst.py
 manual.py
 *.tmp
-*.bak
+*.bakdata/gemini_keys.json
