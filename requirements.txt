@@ -24,3 +24,5 @@ ddgs
 beautifulsoup4
 httpx
 faster-whisper
+chromadb
+sentence-transformers
