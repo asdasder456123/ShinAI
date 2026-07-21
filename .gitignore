@@ -52,3 +52,4 @@ tst.py
 manual.py
 *.tmp
 *.bakdata/gemini_keys.json
+data/gemini_keys.json
