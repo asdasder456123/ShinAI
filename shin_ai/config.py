@@ -65,4 +65,6 @@ WHISPER_CPU_THREADS = _cfg.whisper.cpu_threads
 from shin_ai.providers.registry import get_first_gemini_provider as _get_gemini
 
 _gemini_cfg = _get_gemini()
+GEMINI_API_KEY = __import__("os").getenv("GEMINI_API_KEY1", "")
+
 GEMINI_MODELS: list[str] = _gemini_cfg.models if _gemini_cfg else []
