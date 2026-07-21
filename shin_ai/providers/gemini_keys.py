@@ -29,13 +29,11 @@ def load_keys() -> dict[str, str]:
             logger.error("Failed to load keys from %s: %s", GEMINI_KEYS_FILE, e, exc_info=True)
             return {}
 
-    # No keys file found — create an empty one and instruct the user
-    logger.warning(
-        f"{GEMINI_KEYS_FILE} not found. "
-        "Please add your Gemini API keys to data/gemini_keys.json in the format: "
-        '{"GEMINI_API_KEY1": "AIza...", "GEMINI_API_KEY2": "AIza..."}'
-    )
-    save_keys({})
+    # Fallback to Railway environment variable
+    env_key = os.getenv("GEMINI_API_KEY1", "")
+    if env_key:
+        return {"GEMINI_API_KEY1": env_key}
+
     return {}
 
 
