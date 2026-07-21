@@ -28,7 +28,7 @@ TELEGRAM_BOT_TOKEN = _cfg.platform.telegram_bot_token
 DISCORD_BOT_TOKEN = _cfg.platform.discord_bot_token
 
 # Platform Enablement
-TELEGRAM_ENABLED = _cfg.platform.telegram_enabled
+TELEGRAM_ENABLED = False
 DISCORD_ENABLED = _cfg.platform.discord_enabled
 WHATSAPP_ENABLED = _cfg.platform.whatsapp_enabled
 
