@@ -7,7 +7,7 @@
 # --- Platform ---
 platform:
   telegram:
-    enabled: true
+    enabled: false
     # Get these from https://my.telegram.org/apps
     api_id: "YOUR_API_ID"
     api_hash: "your_api_hash_here"
